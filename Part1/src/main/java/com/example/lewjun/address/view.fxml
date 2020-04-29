@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
             xmlns="http://javafx.com/javafx/8.0.40"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="600.0"
+            fx:controller="com.example.lewjun.address.AddressController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="File">
@@ -24,10 +25,10 @@
         <SplitPane dividerPositions="0.3"
                    prefHeight="300.0"
                    prefWidth="600.0">
-            <TableView prefHeight="298.0" prefWidth="175.0">
+            <TableView prefHeight="298.0" prefWidth="175.0" fx:id="personTable">
                 <columns>
-                    <TableColumn prefWidth="75.0" text="First Name"/>
-                    <TableColumn prefWidth="75.0" text="Last Name"/>
+                    <TableColumn fx:id="firstNameColumn" prefWidth="75.0" text="First Name"/>
+                    <TableColumn fx:id="lastNameColumn" prefWidth="75.0" text="Last Name"/>
                 </columns>
                 <columnResizePolicy>
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
@@ -65,27 +66,32 @@
                         <Label text="First Name" GridPane.columnIndex="0"
                                GridPane.rowIndex="0"/>
                         <Label text="Label" GridPane.columnIndex="1"
-                               GridPane.rowIndex="0"/>
+                               GridPane.rowIndex="0" fx:id="firstNameLabel"/>
 
                         <Label text="Last Name" GridPane.columnIndex="0"
                                GridPane.rowIndex="1"/>
                         <Label text="Label" GridPane.columnIndex="1"
-                               GridPane.rowIndex="1"/>
+                               GridPane.rowIndex="1" fx:id="lastNameLabel"/>
 
                         <Label text="Street" GridPane.columnIndex="0"
                                GridPane.rowIndex="2"/>
                         <Label text="Label" GridPane.columnIndex="1"
-                               GridPane.rowIndex="2"/>
+                               GridPane.rowIndex="2" fx:id="streetLabel"/>
 
                         <Label text="City" GridPane.columnIndex="0"
                                GridPane.rowIndex="3"/>
                         <Label text="Label" GridPane.columnIndex="1"
-                               GridPane.rowIndex="3"/>
+                               GridPane.rowIndex="3" fx:id="cityLabel"/>
 
                         <Label text="Postal Code" GridPane.columnIndex="0"
                                GridPane.rowIndex="4"/>
                         <Label text="Label" GridPane.columnIndex="1"
-                               GridPane.rowIndex="4"/>
+                               GridPane.rowIndex="4" fx:id="postalCodeLabel"/>
+
+                        <Label text="Birthday" GridPane.columnIndex="0"
+                               GridPane.rowIndex="5"/>
+                        <Label text="Label" GridPane.columnIndex="1"
+                               GridPane.rowIndex="5" fx:id="birthdayLabel"/>
 
                     </GridPane>
                 </center>
