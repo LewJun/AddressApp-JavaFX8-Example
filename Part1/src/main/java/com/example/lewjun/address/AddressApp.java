@@ -8,6 +8,10 @@ import javafx.stage.Stage;
  */
 public class AddressApp extends BaseApp {
 
+    public static void main(final String[] args) {
+        launch(args);
+    }
+
     @Override
     public String getResName() {
         return "view.fxml";
