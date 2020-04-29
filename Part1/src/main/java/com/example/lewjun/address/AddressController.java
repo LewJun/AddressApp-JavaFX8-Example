@@ -1,6 +1,7 @@
 package com.example.lewjun.address;
 
 import com.example.lewjun.BaseController;
+import com.example.lewjun.DateUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,10 +43,16 @@ public class AddressController extends BaseController {
     public void initialize(final URL location, final ResourceBundle resources) {
         super.initialize(location, resources);
 
-        // Initialize the person table with the two columns.
-        firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstName);
-        lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastName);
+        initPersonData();
 
+        initPersonTable();
+
+    }
+
+    /**
+     * 初始化PersonData
+     */
+    private void initPersonData() {
         personData.addAll(
                 new Person("Hans", "Muster"),
                 new Person("Ruth", "Mueller"),
@@ -57,7 +64,51 @@ public class AddressController extends BaseController {
                 new Person("Stefan", "Meier"),
                 new Person("Martin", "Mueller")
         );
+    }
+
+    /**
+     * 初始化PersonTable
+     */
+    private void initPersonTable() {
         personTable.setItems(personData);
+
+        personTable.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> showPersonDetail(newValue));
+
+        initPersonTableColumns();
+    }
+
+    /**
+     * 初始化PersonTable的列
+     */
+    private void initPersonTableColumns() {
+        // Initialize the person table with the two columns.
+        firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
+        lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
+    }
+
+    /**
+     * show Person Detail
+     *
+     * @param person Person
+     */
+    private void showPersonDetail(final Person person) {
+        if (person != null) {
+            firstNameLabel.setText(person.getFirstName());
+            lastNameLabel.setText(person.getLastName());
+            streetLabel.setText(person.getStreet());
+            postalCodeLabel.setText(Integer.toString(person.getPostalCode()));
+            cityLabel.setText(person.getCity());
+            birthdayLabel.setText(DateUtil.format(person.getBirthday()));
+        } else {
+            firstNameLabel.setText("");
+            lastNameLabel.setText("");
+            streetLabel.setText("");
+            postalCodeLabel.setText("");
+            cityLabel.setText("");
+            birthdayLabel.setText("");
+        }
     }
 
 }
