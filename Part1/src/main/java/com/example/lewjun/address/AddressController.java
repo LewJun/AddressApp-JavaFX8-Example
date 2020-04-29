@@ -72,9 +72,12 @@ public class AddressController extends BaseController {
     private void initPersonTable() {
         personTable.setItems(personData);
 
+        // Clear person details.
+        showPersonDetails(null);
+
         personTable.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> showPersonDetail(newValue));
+                .addListener((observable, oldValue, newValue) -> showPersonDetails(newValue));
 
         initPersonTableColumns();
     }
@@ -93,7 +96,7 @@ public class AddressController extends BaseController {
      *
      * @param person Person
      */
-    private void showPersonDetail(final Person person) {
+    private void showPersonDetails(final Person person) {
         if (person != null) {
             firstNameLabel.setText(person.getFirstName());
             lastNameLabel.setText(person.getLastName());
