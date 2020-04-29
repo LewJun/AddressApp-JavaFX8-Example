@@ -5,9 +5,7 @@ import com.example.lewjun.DateUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,6 +18,8 @@ public class AddressController extends BaseController {
      * The data as an observable list of Persons.
      */
     private final ObservableList<Person> personData = FXCollections.observableArrayList();
+    @FXML
+    public Button btnDelPerson;
     @FXML
     private TableView<Person> personTable;
     @FXML
@@ -47,6 +47,27 @@ public class AddressController extends BaseController {
 
         initPersonTable();
 
+        deletePerson();
+    }
+
+    /**
+     * 删除Person
+     */
+    private void deletePerson() {
+        btnDelPerson.setOnAction(event -> {
+            final int selectedIndex = personTable.getSelectionModel().getSelectedIndex();
+            if (selectedIndex >= 0) {
+                personTable.getItems().remove(selectedIndex);
+            } else {
+                // Nothing selected.
+                final Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("No Selection");
+                alert.setHeaderText("No Person Selected");
+                alert.setContentText("Please select a person in the table.");
+
+                alert.showAndWait();
+            }
+        });
     }
 
     /**
