@@ -1,7 +1,8 @@
 package com.example.lewjun.address;
 
 import com.example.lewjun.BaseController;
-import com.example.lewjun.DateUtil;
+import com.example.lewjun.person.edit.PersonEditDialog;
+import com.example.lewjun.util.DateUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,12 +15,11 @@ import java.util.ResourceBundle;
  * @author LewJun
  */
 public class AddressController extends BaseController {
-    /**
-     * The data as an observable list of Persons.
-     */
     private final ObservableList<Person> personData = FXCollections.observableArrayList();
     @FXML
     public Button btnDelPerson;
+    @FXML
+    public Button btnNewPerson;
     @FXML
     private TableView<Person> personTable;
     @FXML
@@ -39,6 +39,17 @@ public class AddressController extends BaseController {
     @FXML
     private Label birthdayLabel;
 
+    private void newPerson() {
+        btnNewPerson.setOnAction(event -> {
+            try {
+                final PersonEditDialog personEditDialog = new PersonEditDialog();
+                personEditDialog.showAndWait();
+            } catch (final Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         super.initialize(location, resources);
@@ -48,6 +59,8 @@ public class AddressController extends BaseController {
         initPersonTable();
 
         deletePerson();
+
+        newPerson();
     }
 
     /**
