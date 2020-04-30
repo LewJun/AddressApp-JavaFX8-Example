@@ -43,7 +43,7 @@ public class AddressController extends BaseController {
         btnNewPerson.setOnAction(event -> {
             try {
                 final PersonEditDialog personEditDialog = new PersonEditDialog();
-                personEditDialog.showAndWait();
+                personEditDialog.showModal(btnNewPerson.getText());
             } catch (final Exception e) {
                 e.printStackTrace();
             }
