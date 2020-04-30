@@ -15,25 +15,41 @@ import java.io.IOException;
 public abstract class BaseApp extends Application {
 
     /**
-     * 显示并等待
+     * 显示模态框
      *
      * @param stage Stage
      * @throws Exception
      */
-    public void showAndWait(final Stage stage) throws Exception {
+    public void showModal(final Stage stage) throws Exception {
+        showModal(stage, null);
+    }
+
+    public void showModal(final Stage stage, final String title) throws Exception {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
         initScene(stage);
+
+        setStageTitle(stage, title);
+
         stage.showAndWait();
     }
 
     /**
-     * 显示并等待
+     * 显示模态框
      *
      * @throws Exception
      */
-    public void showAndWait() throws Exception {
-        showAndWait(newStage());
+    public void showModal() throws Exception {
+        showModal(newStage(), null);
+    }
+
+    /**
+     * 显示模态框
+     *
+     * @throws Exception
+     */
+    public void showModal(final String title) throws Exception {
+        showModal(newStage(), title);
     }
 
     /**
@@ -42,7 +58,20 @@ public abstract class BaseApp extends Application {
      * @throws Exception
      */
     public void show() throws Exception {
-        show(newStage());
+        show(newStage(), null);
+    }
+
+    /**
+     * 显示
+     *
+     * @throws Exception
+     */
+    public void show(final String title) throws Exception {
+        show(newStage(), title);
+    }
+
+    public void show(final Stage stage) throws Exception {
+        show(stage, null);
     }
 
     /**
@@ -51,8 +80,9 @@ public abstract class BaseApp extends Application {
      * @param stage Stage
      * @throws Exception
      */
-    public void show(final Stage stage) throws Exception {
+    public void show(final Stage stage, final String title) throws Exception {
         initScene(stage);
+        setStageTitle(stage, title);
         stage.show();
     }
 
@@ -62,7 +92,13 @@ public abstract class BaseApp extends Application {
 
     @Override
     public void start(final Stage stage) throws Exception {
-        show(stage);
+        show(stage, null);
+    }
+
+    private void setStageTitle(final Stage stage, final String title) {
+        if (title != null) {
+            stage.setTitle(title);
+        }
     }
 
     /**
