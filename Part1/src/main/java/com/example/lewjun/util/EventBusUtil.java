@@ -1,5 +1,6 @@
 package com.example.lewjun.util;
 
+import com.example.lewjun.BaseEvent;
 import com.google.common.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,7 @@ public class EventBusUtil {
      *
      * @param event
      */
-    public static void post(final Object event) {
+    public static void post(final BaseEvent event) {
         EVENTBUS.post(event);
     }
 }
