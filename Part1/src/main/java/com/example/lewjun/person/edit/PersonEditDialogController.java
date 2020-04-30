@@ -1,12 +1,16 @@
 package com.example.lewjun.person.edit;
 
 import com.example.lewjun.BaseController;
+import com.example.lewjun.address.Person;
+import com.example.lewjun.util.DateUtil;
+import com.example.lewjun.util.EventBusUtil;
 import com.example.lewjun.util.StageUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -38,6 +42,42 @@ public class PersonEditDialogController extends BaseController {
         super.initialize(location, resources);
 
         handleBtnCancel();
+
+        handleBtnOk();
+    }
+
+    /**
+     * 处理btnOk
+     */
+    private void handleBtnOk() {
+        btnOk.setOnAction(event -> {
+            final Person person = new Person();
+            person.setFirstName(firstNameField.getText());
+            person.setLastName(lastNameField.getText());
+            person.setStreet(streetField.getText());
+
+            final String postalCodeText = postalCodeField.getText();
+            Optional.ofNullable(postalCodeText).ifPresent(it -> {
+                try {
+                    person.setPostalCode(Integer.parseInt(it));
+                } catch (final Exception e) {
+                    logger.error("发生异常", e);
+                }
+            });
+            person.setCity(cityField.getText());
+            Optional.ofNullable(birthdayField.getText()).ifPresent(it -> {
+                try {
+                    person.setBirthday(DateUtil.parse(it));
+                } catch (final Exception e) {
+                    logger.error("发生异常", e);
+                }
+            });
+
+            // 使用EventBus发送消息
+            EventBusUtil.post(new NewPersonEvent(person));
+
+            StageUtil.closeStage(event.getSource());
+        });
     }
 
     /**
