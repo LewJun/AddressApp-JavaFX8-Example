@@ -1,8 +1,10 @@
 package com.example.lewjun.address;
 
 import com.example.lewjun.BaseController;
+import com.example.lewjun.person.edit.NewPersonEvent;
 import com.example.lewjun.person.edit.PersonEditDialog;
 import com.example.lewjun.util.DateUtil;
+import com.google.common.eventbus.Subscribe;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -45,7 +47,7 @@ public class AddressController extends BaseController {
                 final PersonEditDialog personEditDialog = new PersonEditDialog();
                 personEditDialog.showModal(btnNewPerson.getText());
             } catch (final Exception e) {
-                e.printStackTrace();
+                logger.error("出现异常", e);
             }
         });
     }
@@ -61,6 +63,18 @@ public class AddressController extends BaseController {
         deletePerson();
 
         newPerson();
+    }
+
+    /**
+     * 订阅新增Person事件
+     */
+    @Subscribe
+    private void subscribeNewPersonEvent(final NewPersonEvent newPersonEvent) {
+        final Person person = newPersonEvent.getPerson();
+        // 添加
+        personData.add(person);
+        // 选中所添加的数据
+        personTable.getSelectionModel().select(person);
     }
 
     /**
@@ -109,11 +123,16 @@ public class AddressController extends BaseController {
         // Clear person details.
         showPersonDetails(null);
 
+        // 当列被选中的时候，右边显示详情
         personTable.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> showPersonDetails(newValue));
 
+        // 初始化PersonTable的列
         initPersonTableColumns();
+
+        // 默认选中第一条数据
+        personTable.getSelectionModel().selectFirst();
     }
 
     /**
