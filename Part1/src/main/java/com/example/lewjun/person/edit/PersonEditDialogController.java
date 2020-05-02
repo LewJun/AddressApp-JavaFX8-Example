@@ -86,4 +86,9 @@ public class PersonEditDialogController extends BaseController {
     private void handleBtnCancel() {
         btnCancel.setOnAction(event -> StageUtil.closeStage(event.getSource()));
     }
+
+    public void showPersonEdit(Person person) {
+        firstNameField.setText(person.getFirstName());
+        lastNameField.setText(person.getLastName());
+    }
 }

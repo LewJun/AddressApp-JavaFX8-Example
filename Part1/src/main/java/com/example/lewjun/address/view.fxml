@@ -99,9 +99,12 @@
                 <bottom>
                     <ButtonBar>
                         <buttons>
-                            <Button mnemonicParsing="false" text="New..." fx:id="btnNewPerson"/>
-                            <Button mnemonicParsing="false" text="Edit..."/>
-                            <Button mnemonicParsing="false" text="Delete" fx:id="btnDelPerson"/>
+                            <Button mnemonicParsing="false" text="New..."
+                                    fx:id="btnNewPerson"/>
+                            <Button mnemonicParsing="false" text="Edit..."
+                                    fx:id="btnEditPerson"/>
+                            <Button mnemonicParsing="false" text="Delete"
+                                    fx:id="btnDelPerson"/>
                         </buttons>
                     </ButtonBar>
                 </bottom>

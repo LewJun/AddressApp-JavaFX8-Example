@@ -3,6 +3,7 @@ package com.example.lewjun.address;
 import com.example.lewjun.BaseController;
 import com.example.lewjun.person.edit.NewPersonEvent;
 import com.example.lewjun.person.edit.PersonEditDialog;
+import com.example.lewjun.person.edit.PersonEditDialogController;
 import com.example.lewjun.util.DateUtil;
 import com.google.common.eventbus.Subscribe;
 import javafx.collections.FXCollections;
@@ -17,11 +18,14 @@ import java.util.ResourceBundle;
  * @author LewJun
  */
 public class AddressController extends BaseController {
-    private final ObservableList<Person> personData = FXCollections.observableArrayList();
+    private final ObservableList<Person> personData =
+            FXCollections.observableArrayList();
     @FXML
     public Button btnDelPerson;
     @FXML
     public Button btnNewPerson;
+    @FXML
+    public Button btnEditPerson;
     @FXML
     private TableView<Person> personTable;
     @FXML
@@ -63,6 +67,27 @@ public class AddressController extends BaseController {
         deletePerson();
 
         newPerson();
+
+        editPerson();
+    }
+
+    private void editPerson() {
+        btnEditPerson.setOnAction(event -> {
+            Person person =
+                    personTable.getSelectionModel().getSelectedItem();
+
+            PersonEditDialog personEditDialog = new PersonEditDialog();
+
+            try {
+                personEditDialog.show(btnEditPerson.getText());
+
+                PersonEditDialogController personEditDialogController =
+                        personEditDialog.getController();
+                personEditDialogController.showPersonEdit(person);
+            } catch (Exception e) {
+                logger.error("发生异常", e);
+            }
+        });
     }
 
     /**
