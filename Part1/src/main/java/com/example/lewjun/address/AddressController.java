@@ -74,20 +74,31 @@ public class AddressController extends BaseController {
 
     private void editPerson() {
         btnEditPerson.setOnAction(event -> {
-            Person person =
+            final Person person =
                     personTable.getSelectionModel().getSelectedItem();
+            if (person != null) {
+                final PersonEditDialog personEditDialog = new PersonEditDialog();
 
-            PersonEditDialog personEditDialog = new PersonEditDialog();
+                try {
+                    personEditDialog.show(btnEditPerson.getText());
 
-            try {
-                personEditDialog.show(btnEditPerson.getText());
+                    final PersonEditDialogController personEditDialogController =
+                            personEditDialog.getController();
+                    personEditDialogController.showPersonEdit(person);
+                } catch (final Exception e) {
+                    logger.error("发生异常", e);
+                }
+            } else {
+                // Nothing selected.
+                final Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("No Selection");
+                alert.setHeaderText("No Person Selected");
+                alert.setContentText("Please select a person in the table.");
 
-                PersonEditDialogController personEditDialogController =
-                        personEditDialog.getController();
-                personEditDialogController.showPersonEdit(person);
-            } catch (Exception e) {
-                logger.error("发生异常", e);
+                alert.showAndWait();
+                return;
             }
+
         });
     }
 
