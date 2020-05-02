@@ -46,35 +46,22 @@ public class PersonEditDialogController extends BaseController {
         handleBtnOk();
     }
 
+    private Person editPerson;
+
     /**
      * 处理btnOk
      */
     private void handleBtnOk() {
         btnOk.setOnAction(event -> {
-            final Person person = new Person();
-            person.setFirstName(firstNameField.getText());
-            person.setLastName(lastNameField.getText());
-            person.setStreet(streetField.getText());
-
-            final String postalCodeText = postalCodeField.getText();
-            Optional.ofNullable(postalCodeText).ifPresent(it -> {
-                try {
-                    person.setPostalCode(Integer.parseInt(it));
-                } catch (final Exception e) {
-                    logger.error("发生异常", e);
-                }
-            });
-            person.setCity(cityField.getText());
-            Optional.ofNullable(birthdayField.getText()).ifPresent(it -> {
-                try {
-                    person.setBirthday(DateUtil.parse(it));
-                } catch (final Exception e) {
-                    logger.error("发生异常", e);
-                }
-            });
-
-            // 使用EventBus发送消息
-            EventBusUtil.post(new NewPersonEvent(person));
+            Person person = editPerson == null ? new Person() : editPerson;
+            setPerson(person);
+            if (editPerson != null) {
+                // 使用EventBus发送消息
+                EventBusUtil.post(new EditPersonEvent(person));
+            } else {
+                // 使用EventBus发送消息
+                EventBusUtil.post(new NewPersonEvent(person));
+            }
 
             StageUtil.closeStage(event.getSource());
         });
@@ -87,8 +74,37 @@ public class PersonEditDialogController extends BaseController {
         btnCancel.setOnAction(event -> StageUtil.closeStage(event.getSource()));
     }
 
+    private void setPerson(final Person person) {
+        person.setFirstName(firstNameField.getText());
+        person.setLastName(lastNameField.getText());
+        person.setStreet(streetField.getText());
+
+        final String postalCodeText = postalCodeField.getText();
+        Optional.ofNullable(postalCodeText).ifPresent(it -> {
+            try {
+                person.setPostalCode(Integer.parseInt(it));
+            } catch (final Exception e) {
+                logger.error("发生异常", e);
+            }
+        });
+        person.setCity(cityField.getText());
+        Optional.ofNullable(birthdayField.getText()).ifPresent(it -> {
+            try {
+                person.setBirthday(DateUtil.parse(it));
+            } catch (final Exception e) {
+                logger.error("发生异常", e);
+            }
+        });
+    }
+
     public void showPersonEdit(Person person) {
+        this.editPerson = person;
+
         firstNameField.setText(person.getFirstName());
         lastNameField.setText(person.getLastName());
+        streetField.setText(person.getStreet());
+        cityField.setText(person.getCity());
+        postalCodeField.setText(String.valueOf(person.getPostalCode()));
+        birthdayField.setText(DateUtil.format(person.getBirthday()));
     }
 }

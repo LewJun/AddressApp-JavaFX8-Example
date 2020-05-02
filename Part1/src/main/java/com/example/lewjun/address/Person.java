@@ -3,6 +3,7 @@ package com.example.lewjun.address;
 import javafx.beans.property.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 /**
  * Model class for a Person.
@@ -10,7 +11,7 @@ import java.time.LocalDate;
  * @author Marco Jakob
  */
 public class Person {
-
+    private final ObjectProperty<UUID> uid;
     private final StringProperty firstName;
     private final StringProperty lastName;
     private final StringProperty street;
@@ -30,11 +31,21 @@ public class Person {
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
 
+        this.uid = new SimpleObjectProperty<>(UUID.randomUUID());
+
         // Some initial dummy data, just for convenient testing.
         this.street = new SimpleStringProperty("some street");
         this.postalCode = new SimpleIntegerProperty(1234);
         this.city = new SimpleStringProperty("some city");
         this.birthday = new SimpleObjectProperty<>(LocalDate.of(1999, 2, 21));
+    }
+
+    public UUID getUid() {
+        return uid.get();
+    }
+
+    public ObjectProperty<UUID> uidProperty() {
+        return uid;
     }
 
     public String getFirstName() {

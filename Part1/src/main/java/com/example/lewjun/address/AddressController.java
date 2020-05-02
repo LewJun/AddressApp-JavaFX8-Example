@@ -1,6 +1,7 @@
 package com.example.lewjun.address;
 
 import com.example.lewjun.BaseController;
+import com.example.lewjun.person.edit.EditPersonEvent;
 import com.example.lewjun.person.edit.NewPersonEvent;
 import com.example.lewjun.person.edit.PersonEditDialog;
 import com.example.lewjun.person.edit.PersonEditDialogController;
@@ -94,8 +95,8 @@ public class AddressController extends BaseController {
      * 订阅新增Person事件
      */
     @Subscribe
-    private void subscribeNewPersonEvent(final NewPersonEvent newPersonEvent) {
-        final Person person = newPersonEvent.getPerson();
+    private void subscribeNewPersonEvent(final NewPersonEvent event) {
+        final Person person = event.getPerson();
         // 添加
         personData.add(person);
         // 选中所添加的数据
@@ -103,11 +104,25 @@ public class AddressController extends BaseController {
     }
 
     /**
+     * 订阅编辑Person事件
+     */
+    @Subscribe
+    private void subscribeEditPersonEvent(final EditPersonEvent event) {
+        final Person person = event.getPerson();
+        final int index = personData.indexOf(person);
+        if (index >= 0) {
+            personData.set(index, person);
+            personTable.getSelectionModel().select(person);
+        }
+    }
+
+    /**
      * 删除Person
      */
     private void deletePerson() {
         btnDelPerson.setOnAction(event -> {
-            final int selectedIndex = personTable.getSelectionModel().getSelectedIndex();
+            final int selectedIndex =
+                    personTable.getSelectionModel().getSelectedIndex();
             if (selectedIndex >= 0) {
                 personTable.getItems().remove(selectedIndex);
             } else {
