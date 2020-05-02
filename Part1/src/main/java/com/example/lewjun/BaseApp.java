@@ -105,6 +105,8 @@ public abstract class BaseApp extends Application {
         }
     }
 
+    private FXMLLoader fxmlLoader;
+
     /**
      * 初始化Scene
      *
@@ -112,7 +114,10 @@ public abstract class BaseApp extends Application {
      * @throws IOException
      */
     private void initScene(final Stage stage) throws IOException {
-        final Parent root = FXMLLoader.load(getClass().getResource(getResName()));
+        fxmlLoader =
+                new FXMLLoader(getClass().getResource(getResName()));
+
+        final Parent root = fxmlLoader.load();
 
         initStage(stage);
 
@@ -132,4 +137,8 @@ public abstract class BaseApp extends Application {
      * @param stage Stage
      */
     public abstract void initStage(final Stage stage);
+
+    public <T extends BaseController> T getController() {
+        return fxmlLoader.getController();
+    }
 }
