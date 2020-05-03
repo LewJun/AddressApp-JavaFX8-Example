@@ -2,12 +2,12 @@ package com.example.lewjun.person.edit;
 
 import com.example.lewjun.BaseController;
 import com.example.lewjun.address.Person;
+import com.example.lewjun.enums.EnumSex;
 import com.example.lewjun.util.DateUtil;
 import com.example.lewjun.util.EventBusUtil;
 import com.example.lewjun.util.StageUtil;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.Optional;
@@ -20,6 +20,13 @@ import java.util.ResourceBundle;
  */
 public class PersonEditDialogController extends BaseController {
 
+    @FXML
+    public ToggleGroup sexGroup;
+
+    @FXML
+    public RadioButton maleRadio;
+    @FXML
+    public RadioButton femaleRadio;
     @FXML
     private Button btnCancel;
     @FXML
@@ -36,6 +43,7 @@ public class PersonEditDialogController extends BaseController {
     private TextField cityField;
     @FXML
     private TextField birthdayField;
+    private Person editPerson;
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
@@ -46,14 +54,12 @@ public class PersonEditDialogController extends BaseController {
         handleBtnOk();
     }
 
-    private Person editPerson;
-
     /**
      * 处理btnOk
      */
     private void handleBtnOk() {
         btnOk.setOnAction(event -> {
-            Person person = editPerson == null ? new Person() : editPerson;
+            final Person person = editPerson == null ? new Person() : editPerson;
             setPerson(person);
             if (editPerson != null) {
                 // 使用EventBus发送消息
@@ -95,10 +101,15 @@ public class PersonEditDialogController extends BaseController {
                 logger.error("发生异常", e);
             }
         });
+        final Toggle selectedToggle = sexGroup.getSelectedToggle();
+
+        final RadioButton sex = (RadioButton) selectedToggle;
+
+        person.setSex(EnumSex.FEMALE.name().equalsIgnoreCase(sex.getText()) ? EnumSex.FEMALE : EnumSex.MALE);
     }
 
-    public void showPersonEdit(Person person) {
-        this.editPerson = person;
+    public void showPersonEdit(final Person person) {
+        editPerson = person;
 
         firstNameField.setText(person.getFirstName());
         lastNameField.setText(person.getLastName());
@@ -106,5 +117,6 @@ public class PersonEditDialogController extends BaseController {
         cityField.setText(person.getCity());
         postalCodeField.setText(String.valueOf(person.getPostalCode()));
         birthdayField.setText(DateUtil.format(person.getBirthday()));
+        sexGroup.selectToggle(person.getSex() == EnumSex.FEMALE ? femaleRadio : maleRadio);
     }
 }

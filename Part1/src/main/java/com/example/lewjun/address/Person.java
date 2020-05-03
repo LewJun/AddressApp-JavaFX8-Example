@@ -1,5 +1,6 @@
 package com.example.lewjun.address;
 
+import com.example.lewjun.enums.EnumSex;
 import javafx.beans.property.*;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class Person {
     private final IntegerProperty postalCode;
     private final StringProperty city;
     private final ObjectProperty<LocalDate> birthday;
+    private final ObjectProperty<EnumSex> sex;
 
     /**
      * Default constructor.
@@ -31,13 +33,14 @@ public class Person {
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
 
-        this.uid = new SimpleObjectProperty<>(UUID.randomUUID());
+        uid = new SimpleObjectProperty<>(UUID.randomUUID());
 
         // Some initial dummy data, just for convenient testing.
-        this.street = new SimpleStringProperty("some street");
-        this.postalCode = new SimpleIntegerProperty(1234);
-        this.city = new SimpleStringProperty("some city");
-        this.birthday = new SimpleObjectProperty<>(LocalDate.of(1999, 2, 21));
+        street = new SimpleStringProperty("some street");
+        postalCode = new SimpleIntegerProperty(1234);
+        city = new SimpleStringProperty("some city");
+        birthday = new SimpleObjectProperty<>(LocalDate.of(1999, 2, 21));
+        sex = new SimpleObjectProperty<>(EnumSex.MALE);
     }
 
     public UUID getUid() {
@@ -118,5 +121,13 @@ public class Person {
 
     public ObjectProperty<LocalDate> birthdayProperty() {
         return birthday;
+    }
+
+    public EnumSex getSex() {
+        return sex.get();
+    }
+
+    public void setSex(final EnumSex enumSex) {
+        sex.set(enumSex);
     }
 }

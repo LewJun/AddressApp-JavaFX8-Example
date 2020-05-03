@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
             xmlns="http://javafx.com/javafx/8.0.65"
-            prefHeight="250.0" prefWidth="500.0"
+            prefHeight="300.0" prefWidth="500.0"
             fx:controller="com.example.lewjun.person.edit.PersonEditDialogController">
     <padding>
         <Insets topRightBottomLeft="5"/>
@@ -61,6 +61,18 @@
                    GridPane.rowIndex="5"/>
             <TextField GridPane.columnIndex="1"
                        GridPane.rowIndex="5" fx:id="birthdayField"/>
+
+            <fx:define>
+                <ToggleGroup fx:id="sexGroup"/>
+            </fx:define>
+
+            <Label text="Sex" GridPane.columnIndex="0"
+                   GridPane.rowIndex="6"/>
+
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="6" spacing="10">
+                <RadioButton toggleGroup="$sexGroup" text="Male" fx:id="maleRadio" selected="true"/>
+                <RadioButton toggleGroup="$sexGroup" text="Female" fx:id="femaleRadio"/>
+            </HBox>
 
         </GridPane>
     </center>

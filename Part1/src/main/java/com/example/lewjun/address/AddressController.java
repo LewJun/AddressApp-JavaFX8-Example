@@ -29,6 +29,8 @@ public class AddressController extends BaseController {
     @FXML
     public Button btnEditPerson;
     @FXML
+    public Label sexLabel;
+    @FXML
     private TableView<Person> personTable;
     @FXML
     private TableColumn<Person, String> firstNameColumn;
@@ -211,6 +213,7 @@ public class AddressController extends BaseController {
             postalCodeLabel.setText(Integer.toString(person.getPostalCode()));
             cityLabel.setText(person.getCity());
             birthdayLabel.setText(DateUtil.format(person.getBirthday()));
+            sexLabel.setText(person.getSex().name());
         } else {
             firstNameLabel.setText("");
             lastNameLabel.setText("");
@@ -218,6 +221,7 @@ public class AddressController extends BaseController {
             postalCodeLabel.setText("");
             cityLabel.setText("");
             birthdayLabel.setText("");
+            sexLabel.setText("");
         }
     }
 
