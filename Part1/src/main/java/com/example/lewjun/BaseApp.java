@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -119,6 +120,8 @@ public abstract class BaseApp extends Application {
         final Parent root = fxmlLoader.load();
 
         root.getStylesheets().add("DarkTheme.css");
+
+        stage.getIcons().add(new Image("ic_launcher.png"));
 
         initStage(stage);
 
