@@ -17,6 +17,7 @@ import java.io.IOException;
 public abstract class BaseApp extends Application {
 
     protected static final Logger logger = LoggerFactory.getLogger(BaseApp.class);
+    private FXMLLoader fxmlLoader;
 
     /**
      * 显示模态框
@@ -25,17 +26,7 @@ public abstract class BaseApp extends Application {
      * @throws Exception
      */
     public void showModal(final Stage stage) throws Exception {
-        showModal(stage, null);
-    }
-
-    public void showModal(final Stage stage, final String title) throws Exception {
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setResizable(false);
-        initScene(stage);
-
-        setStageTitle(stage, title);
-
-        stage.showAndWait();
+        showModal(stage, null, false);
     }
 
     /**
@@ -44,7 +35,7 @@ public abstract class BaseApp extends Application {
      * @throws Exception
      */
     public void showModal() throws Exception {
-        showModal(newStage(), null);
+        showModal(false);
     }
 
     /**
@@ -53,7 +44,33 @@ public abstract class BaseApp extends Application {
      * @throws Exception
      */
     public void showModal(final String title) throws Exception {
-        showModal(newStage(), title);
+        showModal(title, false);
+    }
+
+    public void showModal(final Stage stage, final boolean wait) throws Exception {
+        showModal(stage, null, wait);
+    }
+
+    public void showModal(final boolean wait) throws Exception {
+        showModal(newStage(), wait);
+    }
+
+    public void showModal(final String title, final boolean wait) throws Exception {
+        showModal(newStage(), title, wait);
+    }
+
+    public void showModal(final Stage stage, final String title, final boolean wait) throws Exception {
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        initScene(stage);
+
+        setStageTitle(stage, title);
+
+        if (wait) {
+            stage.showAndWait();
+        } else {
+            stage.show();
+        }
     }
 
     /**
@@ -104,8 +121,6 @@ public abstract class BaseApp extends Application {
             stage.setTitle(title);
         }
     }
-
-    private FXMLLoader fxmlLoader;
 
     /**
      * 初始化Scene
