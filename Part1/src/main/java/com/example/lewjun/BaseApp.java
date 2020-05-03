@@ -1,5 +1,6 @@
 package com.example.lewjun;
 
+import com.example.lewjun.callback.OnShowCallback;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,8 +26,8 @@ public abstract class BaseApp extends Application {
      * @param stage Stage
      * @throws Exception
      */
-    public void showModal(final Stage stage) throws Exception {
-        showModal(stage, null, false);
+    public void showModal(final Stage stage, final OnShowCallback callback) throws Exception {
+        showModal(stage, null, false, callback);
     }
 
     /**
@@ -34,8 +35,8 @@ public abstract class BaseApp extends Application {
      *
      * @throws Exception
      */
-    public void showModal() throws Exception {
-        showModal(false);
+    public void showModal(final OnShowCallback callback) throws Exception {
+        showModal(false, callback);
     }
 
     /**
@@ -43,57 +44,30 @@ public abstract class BaseApp extends Application {
      *
      * @throws Exception
      */
-    public void showModal(final String title) throws Exception {
-        showModal(title, false);
+    public void showModal(final String title, final OnShowCallback callback) throws Exception {
+        showModal(title, false, callback);
     }
 
-    public void showModal(final Stage stage, final boolean wait) throws Exception {
-        showModal(stage, null, wait);
+    public void showModal(final boolean wait, final OnShowCallback callback) throws Exception {
+        showModal(newStage(), wait, callback);
     }
 
-    public void showModal(final boolean wait) throws Exception {
-        showModal(newStage(), wait);
+    public void showModal(final Stage stage, final boolean wait, final OnShowCallback callback) throws Exception {
+        showModal(stage, null, wait, callback);
     }
 
-    public void showModal(final String title, final boolean wait) throws Exception {
-        showModal(newStage(), title, wait);
+    public void showModal(final String title, final boolean wait, final OnShowCallback callback) throws Exception {
+        showModal(newStage(), title, wait, callback);
     }
 
-    public void showModal(final Stage stage, final String title, final boolean wait) throws Exception {
+    public void showModal(final Stage stage, final String title, final boolean wait,
+                          final OnShowCallback callback) throws Exception {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
-        initScene(stage);
 
-        setStageTitle(stage, title);
-
-        if (wait) {
-            stage.showAndWait();
-        } else {
-            stage.show();
-        }
+        show(stage, title, wait, callback);
     }
 
-    /**
-     * 显示
-     *
-     * @throws Exception
-     */
-    public void show() throws Exception {
-        show(newStage(), null);
-    }
-
-    /**
-     * 显示
-     *
-     * @throws Exception
-     */
-    public void show(final String title) throws Exception {
-        show(newStage(), title);
-    }
-
-    public void show(final Stage stage) throws Exception {
-        show(stage, null);
-    }
 
     /**
      * 显示
@@ -101,10 +75,20 @@ public abstract class BaseApp extends Application {
      * @param stage Stage
      * @throws Exception
      */
-    public void show(final Stage stage, final String title) throws Exception {
+    public void show(final Stage stage, final String title, final boolean wait,
+                     final OnShowCallback callback) throws Exception {
         initScene(stage);
         setStageTitle(stage, title);
-        stage.show();
+
+        if (wait) {
+            stage.showAndWait();
+        } else {
+            stage.show();
+
+            if (callback != null) {
+                callback.run(getController());
+            }
+        }
     }
 
     private Stage newStage() {
@@ -113,7 +97,7 @@ public abstract class BaseApp extends Application {
 
     @Override
     public void start(final Stage stage) throws Exception {
-        show(stage, null);
+        show(stage, null, false, null);
     }
 
     private void setStageTitle(final Stage stage, final String title) {
