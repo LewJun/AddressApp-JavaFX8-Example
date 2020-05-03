@@ -80,7 +80,7 @@ public class AddressController extends BaseController {
                 final PersonEditDialog personEditDialog = new PersonEditDialog();
 
                 try {
-                    personEditDialog.show(btnEditPerson.getText());
+                    personEditDialog.showModal(btnEditPerson.getText());
 
                     final PersonEditDialogController personEditDialogController =
                             personEditDialog.getController();
