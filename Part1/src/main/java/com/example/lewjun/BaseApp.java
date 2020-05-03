@@ -118,6 +118,8 @@ public abstract class BaseApp extends Application {
 
         final Parent root = fxmlLoader.load();
 
+        root.getStylesheets().add("DarkTheme.css");
+
         initStage(stage);
 
         stage.setScene(new Scene(root));
