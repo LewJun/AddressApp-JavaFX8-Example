@@ -1,6 +1,7 @@
 package com.example.lewjun.address;
 
 import com.example.lewjun.BaseController;
+import com.example.lewjun.callback.OnShowCallback;
 import com.example.lewjun.person.edit.EditPersonEvent;
 import com.example.lewjun.person.edit.NewPersonEvent;
 import com.example.lewjun.person.edit.PersonEditDialog;
@@ -50,7 +51,7 @@ public class AddressController extends BaseController {
         btnNewPerson.setOnAction(event -> {
             try {
                 final PersonEditDialog personEditDialog = new PersonEditDialog();
-                personEditDialog.showModal(btnNewPerson.getText());
+                personEditDialog.showModal(btnNewPerson.getText(), true, null);
             } catch (final Exception e) {
                 logger.error("出现异常", e);
             }
@@ -80,11 +81,14 @@ public class AddressController extends BaseController {
                 final PersonEditDialog personEditDialog = new PersonEditDialog();
 
                 try {
-                    personEditDialog.showModal(btnEditPerson.getText());
+                    personEditDialog.showModal(btnEditPerson.getText(),
+                            new OnShowCallback<PersonEditDialogController>() {
+                                @Override
+                                public void run(final PersonEditDialogController controller) {
+                                    controller.showPersonEdit(person);
+                                }
+                            });
 
-                    final PersonEditDialogController personEditDialogController =
-                            personEditDialog.getController();
-                    personEditDialogController.showPersonEdit(person);
                 } catch (final Exception e) {
                     logger.error("发生异常", e);
                 }
@@ -96,7 +100,6 @@ public class AddressController extends BaseController {
                 alert.setContentText("Please select a person in the table.");
 
                 alert.showAndWait();
-                return;
             }
 
         });
